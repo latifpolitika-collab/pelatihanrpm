@@ -36,11 +36,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .stars{font-size:40px;letter-spacing:4px;color:#f5b800;margin:8px 0}
 .pill{display:inline-block;background:#eaf4ff;color:#0756b3;padding:7px 12px;border-radius:30px;font-weight:700;font-size:13px}
 .notice{background:#fff8df;border-left:4px solid var(--gold);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:10px}
+.locked-notice{background:#ffe6e6;border-left:4px solid #dc2626;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.5;color:#991b1b;margin-top:10px;display:none}
 
-/* Preview Sertifikat Card - Posisi teks disesuaikan di tengah pita */
+/* Preview Sertifikat Card */
 .cert-preview-box {position: relative; width: 100%; max-width: 750px; margin: 15px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid var(--gold);}
 .cert-preview-box img {width: 100%; height: auto; display: block;}
-.cert-name-overlay {position: absolute; top: 51.5%; left: 50%; transform: translate(-50%, -50%); width: 75%; text-align: center; font-size: clamp(20px, 3.8vw, 36px); font-weight: 900; color: #08265b; font-family: 'Times New Roman', serif; text-shadow: 1px 1px 2px rgba(255,255,255,0.9); letter-spacing: 1.5px;}
+.cert-name-overlay {position: absolute; top: 41.5%; left: 50%; transform: translate(-50%, -50%); width: 75%; text-align: center; font-size: clamp(16px, 3vw, 30px); font-weight: 900; color: #08265b; font-family: 'Times New Roman', serif; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); letter-spacing: 1px;}
 
 footer{text-align:center;color:#64748b;font-size:13px;padding:12px 18px 28px}
 @media(min-width:650px){.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{padding:26px}}
@@ -62,31 +63,21 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:12px 18px 28px}
     <a href="MODUL PELATIHAN ANGGOTA RPM.pdf" download class="btn-download btn-green">📥 Download Modul Pelatihan (PDF)</a>
   </section>
 
-  <!-- Data Peserta & Live Sertifikat -->
+  <!-- Data Peserta -->
   <section class="card" id="identity">
-    <h2>📝 Data Peserta &amp; Cek Sertifikat</h2>
+    <h2>📝 Data Peserta</h2>
     <div class="two">
       <div><label for="nama">Nama lengkap (Sesuai Sertifikat)</label><input id="nama" autocomplete="name" placeholder="Masukkan nama lengkap" required oninput="updateCertName()"></div>
       <div><label for="hp">Nomor HP / WhatsApp</label><input id="hp" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890" required></div>
     </div>
-    <p class="hint">Ketik nama lengkap Anda di atas. Nama akan otomatis terisi pada pratinjau sertifikat di bawah ini secara langsung (*real-time*).</p>
-    
-    <!-- Live Sertifikat Preview -->
-    <div style="margin-top: 20px; text-align: center;">
-      <h3 style="color:var(--navy); font-size:17px; margin-bottom:8px;">Pratinjau Sertifikat Anda:</h3>
-      <div class="cert-preview-box">
-        <img id="certImage" alt="Sertifikat Pelatihan RPM">
-        <div class="cert-name-overlay" id="certNameDisplay">[ NAMA PESERTA ]</div>
-      </div>
-      <p class="hint">Sertifikat dapat diunduh langsung dengan mengklik tombol di bawah:</p>
-      <button type="button" onclick="downloadCertificate()" style="margin-top: 10px; background:linear-gradient(100deg,#159447,#22c55e);">💾 Download Sertifikat (Gambar PNG)</button>
-    </div>
+    <p class="hint">Isi data diri Anda dengan benar sebelum mengerjakan soal evaluasi di bawah.</p>
   </section>
 
   <!-- Kuis / Evaluasi -->
   <section class="card" id="quiz">
     <h2>📚 10 Soal Pilihan Ganda Evaluasi</h2>
-    <div class="hint">Pilih satu jawaban A, B, C, atau D pada setiap soal di bawah ini.</div>
+    <div class="notice">Perhatian: Sertifikat resmi hanya dapat diunduh jika peserta berhasil menjawab seluruh soal dengan benar (**Nilai 100**).</div>
+    <div class="hint" style="margin-top:10px;">Pilih satu jawaban A, B, C, atau D pada setiap soal di bawah ini.</div>
     <div class="progress"><div class="bar" id="bar"></div></div>
     <div class="hint" id="progressText">0 dari 10 soal dijawab</div>
     <form id="quizForm">
@@ -95,7 +86,7 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:12px 18px 28px}
     </form>
   </section>
 
-  <!-- Hasil Evaluasi -->
+  <!-- Hasil Evaluasi & Sertifikat Terkunci / Terbuka -->
   <section class="card result" id="result" aria-live="polite">
     <div class="pill">HASIL EVALUASI RPM</div>
     <h2 id="greeting">Terima kasih sudah mengikuti evaluasi!</h2>
@@ -106,8 +97,27 @@ footer{text-align:center;color:#64748b;font-size:13px;padding:12px 18px 28px}
     <p><strong>Peserta:</strong> <span id="rNama"></span><br><strong>Nomor HP:</strong> <span id="rHp"></span></p>
     <p class="hint" id="correct"></p>
     
-    <button type="button" onclick="downloadCertificate()" class="btn-green" style="margin-bottom:12px;">📥 Download Sertifikat Resmi (PNG)</button>
-    <button type="button" onclick="window.print()">🖨️ Cetak / Simpan Halaman (PDF)</button>
+    <!-- Area Tombol Download Sertifikat & Pratinjau (Hanya muncul jika nilai 100) -->
+    <div id="certContainer" style="display:none; margin-top:20px;">
+      <div class="notice" style="background:#e8f8ee; border-left-color:var(--green); margin-bottom:15px;">🎉 Selamat! Anda Mendapatkan Nilai 100. Sertifikat Resmi Anda Sudah Terbuka dan Siap Diunduh.</div>
+      
+      <h3 style="color:var(--navy); font-size:17px; margin-bottom:8px;">Pratinjau Sertifikat Anda:</h3>
+      <div class="cert-preview-box">
+        <img id="certImage" alt="Sertifikat Pelatihan RPM">
+        <div class="cert-name-overlay" id="certNameDisplay">[ NAMA PESERTA ]</div>
+      </div>
+      
+      <button type="button" onclick="downloadCertificate()" class="btn-green" style="margin-bottom:12px;">📥 Download Sertifikat Resmi (PNG)</button>
+    </div>
+
+    <!-- Pesan Jika Nilai Belum 100 -->
+    <div id="lockedContainer" class="locked-notice">
+      🔒 <strong>Sertifikat Belum Terbuka:</strong> Nilai Anda belum 100. Silakan periksa kembali materi pelatihan dan ulangi ujian untuk mendapatkan nilai sempurna agar dapat mengunduh sertifikat. <br><button type="button" onclick="location.reload()" style="margin-top:10px; background:#dc2626; font-size:14px; padding:10px;">🔄 Ulangi Ujian</button>
+    </div>
+
+    <div style="margin-top:20px;">
+      <button type="button" onclick="window.print()">🖨️ Cetak / Simpan Halaman (PDF)</button>
+    </div>
     
     <div class="notice" style="margin-top:15px;">Tunjukkan hasil dan sertifikat ini kepada panitia Rumah Pemberdayaan Masyarakat (RPM).</div>
   </section>
@@ -123,7 +133,7 @@ const ctxTemp = canvasTemp.getContext('2d');
 
 const baseImg = new Image();
 baseImg.crossOrigin = "anonymous";
-baseImg.src = "SERTIFIKAT_3.png";
+baseImg.src = "SERTIFIKAT_3.png"; 
 
 baseImg.onload = function() {
   ctxTemp.drawImage(baseImg, 0, 0);
@@ -160,14 +170,13 @@ function downloadCertificate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
   
-  // Ukuran font dan koordinat yang disesuaikan tepat di tengah pita kuning
-  ctx.font = "bold 64px 'Times New Roman', Times, serif";
+  ctx.font = "bold 52px 'Times New Roman', Times, serif";
   ctx.fillStyle = "#08265b";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   
   const x = canvas.width / 2;
-  const y = canvas.height * 0.515; // Posisi vertikal pas di tengah pita
+  const y = canvas.height * 0.415;
   
   ctx.fillText(namaVal.toUpperCase(), x, y);
   
@@ -219,6 +228,7 @@ form.addEventListener('submit',e=>{
  if(!nama||!hp){alert('Mohon isi nama lengkap dan nomor HP terlebih dahulu.');document.getElementById(!nama?'nama':'hp').focus();return;}
  const digits=hp.replace(/\D/g,'');
  if(digits.length<9||digits.length>15){alert('Periksa kembali nomor HP. Masukkan 9–15 angka.');document.getElementById('hp').focus();return;}
+ 
  let correct=0;
  data.forEach((item,i)=>{const chosen=form.querySelector('input[name="q'+i+'"]:checked');if(chosen&&Number(chosen.value)===item.a)correct++;});
  const score=correct*10;
@@ -230,6 +240,7 @@ form.addEventListener('submit',e=>{
    2:['Tetap Semangat!','Mari pelajari kembali materi dan coba praktik dengan pendamping.'],
    1:['Ayo Terus Belajar!','Tidak apa-apa. Belajar AI adalah proses. Baca modul dan coba lagi.']
  };
+ 
  document.getElementById('greeting').textContent='Selamat, '+nama+'!';
  document.getElementById('score').textContent=score+'/100';
  document.getElementById('stars').textContent='★'.repeat(stars)+'☆'.repeat(5-stars);
@@ -238,6 +249,17 @@ form.addEventListener('submit',e=>{
  document.getElementById('rNama').textContent=nama;
  document.getElementById('rHp').textContent=hp;
  document.getElementById('correct').textContent='Jawaban benar: '+correct+' dari 10 soal. Setiap jawaban benar bernilai 10 poin.';
+ 
+ // Cek apakah nilai 100
+ if(score === 100) {
+   document.getElementById('certContainer').style.display = 'block';
+   document.getElementById('lockedContainer').style.display = 'none';
+   updateCertName();
+ } else {
+   document.getElementById('certContainer').style.display = 'none';
+   document.getElementById('lockedContainer').style.display = 'block';
+ }
+
  document.getElementById('result').style.display='block';
  document.getElementById('result').scrollIntoView({behavior:'smooth'});
  submit.disabled=true;
