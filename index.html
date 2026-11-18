@@ -3,594 +3,593 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0756b3">
-  <title>Evaluasi Pelatihan AI & ChatGPT | Rumah Pemberdayaan Masyarakat</title>
-  <!-- Load Tailwind CSS -->
+  <title>Evaluasi Pelatihan AI &amp; ChatGPT - Sertifikat Resmi</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Load Google Font Inter & Playfair Display for Certificate -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .font-serif-cert {
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-    /* Pengaturan khusus saat mencetak halaman / sertifikat ke PDF */
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif-cert { font-family: 'Playfair Display', Georgia, serif; }
     @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printableArea, #printableArea * {
-        visibility: visible;
-      }
-      #printableArea {
+      body * { visibility: hidden; }
+      #printableCertificate, #printableCertificate * { visibility: visible; }
+      #printableCertificate {
         position: fixed;
         left: 0;
         top: 0;
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
         margin: 0;
-        padding: 0;
-        box-shadow: none !important;
-      }
-      .no-print {
-        display: none !important;
+        border-radius: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 via-slate-50 to-emerald-50 text-slate-800 min-h-screen flex flex-col">
-
-  <!-- Toast / Message Box Kustom (Pengganti alert()) -->
-  <div id="toastBox" class="fixed top-4 right-4 left-4 sm:left-auto sm:w-96 z-50 transform transition-all duration-300 -translate-y-24 opacity-0 pointer-events-none">
-    <div id="toastContent" class="bg-slate-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-start gap-3 text-sm">
-      <span id="toastIcon" class="text-lg">⚠️</span>
-      <div class="flex-1">
-        <p id="toastTitle" class="font-bold text-amber-300">Perhatian</p>
-        <p id="toastMessage" class="text-slate-200 text-xs mt-0.5 leading-relaxed"></p>
-      </div>
-      <button type="button" onclick="hideToast()" class="text-slate-400 hover:text-white font-bold text-base leading-none">&times;</button>
+<body class="bg-slate-100 text-slate-800 min-h-screen py-6 px-4 sm:px-6">
+  <main class="max-w-3xl mx-auto space-y-6">
+    <!-- Custom Notification Banner -->
+    <div id="toastNotification" class="fixed top-4 right-4 z-50 max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 text-xs sm:text-sm font-medium hidden transition-all duration-300 flex items-center gap-2">
+      <span id="toastIcon">ℹ️</span>
+      <span id="toastMessage">Pesan notifikasi</span>
     </div>
-  </div>
 
-  <!-- Header Utama -->
-  <header class="bg-gradient-to-r from-blue-900 via-blue-800 to-sky-700 text-white pt-8 pb-12 px-4 text-center shadow-lg">
-    <div class="max-w-3xl mx-auto space-y-2">
-      <div class="inline-block bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-extrabold tracking-widest text-xs px-3.5 py-1 rounded-full uppercase">
-        Rumah Pemberdayaan Masyarakat
+    <!-- Header / Nav Tabs -->
+    <header class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 text-center space-y-4">
+      <div class="inline-block bg-blue-100 text-blue-800 font-bold px-4 py-1.5 rounded-full text-xs tracking-wider">
+        RUMAH PEMBERDAYAAN MASYARAKAT &amp; PT WEB DIGITAL MARKETING
       </div>
-      <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight pt-1">
-        EVALUASI PELATIHAN<br class="sm:hidden"> AI &amp; CHATGPT
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+        Evaluasi Pelatihan AI &amp; ChatGPT
       </h1>
-      <p class="text-blue-100 text-sm sm:text-base font-medium">
-        Belajar • Mencoba • Menghasilkan Karya
+      <p class="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
+        Selesaikan 10 soal ujian evaluasi di bawah ini. Raih <strong>Nilai 100</strong> untuk membuka dan mengunduh sertifikat penghargaan resmi pelatihan.
       </p>
-    </div>
-  </header>
 
-  <!-- Navigasi Tab -->
-  <div class="max-w-3xl w-full mx-auto px-4 -mt-6 z-10">
-    <div class="bg-white p-1.5 rounded-2xl shadow-md border border-blue-100 grid grid-cols-2 gap-1.5">
-      <button type="button" id="tabQuizBtn" onclick="switchTab('quiz')" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-700 text-white shadow-sm flex items-center justify-center gap-2">
-        <span>📝</span> Ujian Evaluasi
-      </button>
-      <button type="button" id="tabCertBtn" onclick="switchTab('sertifikat')" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition text-slate-600 hover:bg-slate-100 flex items-center justify-center gap-2">
-        <span>🏆</span> Cek &amp; Unduh Sertifikat
-      </button>
-    </div>
-  </div>
+      <!-- Tab Buttons -->
+      <div class="flex flex-wrap justify-center gap-2 pt-2">
+        <button id="tabQuizBtn" onclick="switchTab('quiz')" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-600 text-white shadow">
+          📝 Ujian Evaluasi
+        </button>
+        <button id="tabSertifikatBtn" onclick="switchTab('sertifikat')" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-slate-200 text-slate-700 hover:bg-slate-300">
+          🏆 Cek &amp; Unduh Sertifikat
+        </button>
+      </div>
+    </header>
 
-  <!-- Kontainer Utama -->
-  <main class="max-w-3xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
-
-    <!-- ==================== TAB 1: UJIAN EVALUASI ==================== -->
+    <!-- TAB 1: UJIAN KUIS -->
     <div id="sectionQuiz" class="space-y-6">
-
-      <!-- Kartu Unduh Modul -->
-      <section class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <h2 class="text-lg font-extrabold text-blue-950 flex items-center gap-2">
-            <span>📖</span> Materi &amp; Modul Pelatihan
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Pelajari modul panduan lengkap Pelatihan AI &amp; ChatGPT untuk pemula dari Rumah Pemberdayaan Masyarakat.
-          </p>
-        </div>
-        <a href="MODUL PELATIHAN ANGGOTA RPM.pdf" download class="shrink-0 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-bold text-xs sm:text-sm shadow transition text-center flex items-center justify-center gap-2">
-          <span>📥</span> Download Modul (PDF)
-        </a>
-      </section>
-
-      <!-- Kartu Data Peserta -->
-      <section class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-blue-100 space-y-4" id="identity">
-        <div>
-          <h2 class="text-lg font-extrabold text-blue-950 flex items-center gap-2">
-            <span>👤</span> Data Peserta Pelatihan
-          </h2>
-          <p class="text-xs text-slate-500 mt-0.5">Isi nama lengkap (beserta gelar jika ada) untuk dicetak pada sertifikat.</p>
+      <section class="bg-white rounded-2xl p-5 sm:p-7 shadow-lg border border-slate-100 space-y-6">
+        <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+              <span>📋</span> Formulir Peserta &amp; Soal Ujian
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Isi data diri Anda dengan benar sebelum mengerjakan soal.</p>
+          </div>
+          <button type="button" onclick="autoFillPerfect()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 hover:bg-amber-200 transition self-start sm:self-auto">
+            ⚡ Simulasi Nilai 100
+          </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="space-y-1.5">
-            <label for="nama" class="block font-bold text-xs text-slate-700">Nama Lengkap (Sesuai Sertifikat) <span class="text-rose-500">*</span></label>
-            <input id="nama" autocomplete="name" placeholder="Contoh: Siti Aminah, S.Pd" oninput="syncNameInputs(this.value)" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition">
+        <form id="quizForm" class="space-y-6">
+          <!-- Identitas Peserta -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div class="space-y-1">
+              <label for="nama" class="block font-bold text-xs text-slate-700">Nama Lengkap &amp; Gelar</label>
+              <input type="text" id="nama" required placeholder="Contoh: Latif Politika" class="w-full px-4 py-2.5 border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm font-semibold">
+            </div>
+            <div class="space-y-1">
+              <label for="hp" class="block font-bold text-xs text-slate-700">Nomor WhatsApp (Aktif)</label>
+              <input type="tel" id="hp" required placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm font-semibold">
+            </div>
           </div>
-          <div class="space-y-1.5">
-            <label for="hp" class="block font-bold text-xs text-slate-700">Nomor HP / WhatsApp <span class="text-rose-500">*</span></label>
-            <input id="hp" inputmode="tel" autocomplete="tel" placeholder="Contoh: 081234567890" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition">
-          </div>
-        </div>
-      </section>
 
-      <!-- Kartu Soal Kuis -->
-      <section class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-blue-100 space-y-4" id="quiz">
-        <div class="space-y-2">
-          <h2 class="text-lg font-extrabold text-blue-950 flex items-center gap-2">
-            <span>📚</span> 10 Soal Pilihan Ganda Evaluasi
-          </h2>
-          <div class="bg-amber-50 border-l-4 border-amber-400 p-3.5 rounded-r-xl text-xs text-amber-900 leading-relaxed">
-            <strong>Syarat Sertifikat:</strong> Sertifikat resmi hanya terbuka jika Anda berhasil menjawab seluruh 10 soal dengan benar (<strong>Nilai 100</strong>).
-          </div>
-        </div>
+          <!-- Container Soal Dinamis -->
+          <div id="questionsContainer" class="space-y-5"></div>
 
-        <!-- Progress Bar -->
-        <div class="space-y-1.5 pt-1">
-          <div class="flex justify-between text-xs font-bold text-slate-600">
-            <span>Progres Pengerjaan</span>
-            <span id="progressText" class="text-blue-700">0 dari 10 soal dijawab</span>
-          </div>
-          <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
-            <div id="bar" class="h-full w-0 bg-gradient-to-r from-emerald-500 to-lime-500 transition-all duration-300 rounded-full"></div>
-          </div>
-        </div>
-
-        <!-- Form Pertanyaan -->
-        <form id="quizForm" class="space-y-4 pt-2" novalidate>
-          <div id="questions" class="divide-y divide-slate-100"></div>
-
-          <div class="pt-4">
-            <button id="submitBtn" type="submit" disabled class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-blue-700 to-sky-600 hover:from-blue-800 hover:to-sky-700 disabled:opacity-45 disabled:cursor-not-allowed text-white font-extrabold text-sm sm:text-base shadow-lg shadow-blue-700/20 transition cursor-pointer">
-              Lihat Nilai &amp; Selesaikan Evaluasi
+          <div class="pt-4 flex flex-col sm:flex-row gap-3">
+            <button type="submit" id="submitBtn" class="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-base shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              🚀 Kumpulkan Ujian &amp; Lihat Nilai
+            </button>
+            <button type="button" id="resetBtn" onclick="resetQuiz()" class="px-5 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition hidden">
+              🔄 Ulangi Kuis
             </button>
           </div>
         </form>
       </section>
 
-      <!-- Kartu Hasil Evaluasi -->
-      <section id="result" aria-live="polite" class="hidden bg-white rounded-2xl p-6 sm:p-8 shadow-lg border-2 border-blue-200 text-center space-y-4">
-        <div class="inline-block bg-blue-100 text-blue-800 font-extrabold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase">
-          Hasil Evaluasi RPM
+      <!-- Hasil Ujian Box -->
+      <section id="result" class="bg-white rounded-2xl p-5 sm:p-7 shadow-lg border border-slate-100 space-y-4 hidden">
+        <div class="text-center space-y-1 border-b border-slate-100 pb-4">
+          <div id="greeting" class="text-lg font-bold text-blue-600">Selamat!</div>
+          <div id="score" class="text-4xl sm:text-5xl font-black text-slate-900">0/100</div>
+          <div id="stars" class="text-amber-500 text-xl tracking-widest pt-1">★★★★★</div>
+          <div id="level" class="text-xs font-bold px-3 py-1 bg-blue-100 text-blue-800 rounded-full inline-block mt-2">Sangat Hebat!</div>
         </div>
 
-        <h2 id="greeting" class="text-xl sm:text-2xl font-black text-slate-900">Terima kasih sudah mengikuti evaluasi!</h2>
-
-        <div class="py-2">
-          <div id="score" class="text-5xl sm:text-6xl font-black text-blue-700 tracking-tight">0/100</div>
-          <div id="stars" class="text-3xl sm:text-4xl tracking-widest text-amber-400 mt-1">☆☆☆☆☆</div>
+        <div class="bg-slate-50 p-4 rounded-xl space-y-2 text-xs sm:text-sm">
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-semibold">Nama Peserta:</span>
+            <span id="rNama" class="font-bold text-slate-800">-</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-semibold">Nomor HP:</span>
+            <span id="rHp" class="font-bold text-slate-800">-</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500 font-semibold">Status Ujian:</span>
+            <span id="correct" class="font-bold text-emerald-600">Jawaban benar: 0 dari 10 soal</span>
+          </div>
         </div>
 
-        <div class="space-y-1 max-w-md mx-auto">
-          <h3 id="level" class="text-lg font-extrabold text-slate-800"></h3>
-          <p id="feedback" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
-        </div>
+        <p id="feedback" class="text-xs sm:text-sm text-slate-600 text-center italic"></p>
 
-        <div class="bg-slate-50 rounded-xl p-4 max-w-md mx-auto text-xs sm:text-sm text-slate-700 space-y-1 border border-slate-200">
-          <p><strong>Peserta:</strong> <span id="rNama"></span></p>
-          <p><strong>Nomor HP:</strong> <span id="rHp"></span></p>
-          <p id="correct" class="text-slate-500 pt-1 text-xs"></p>
-        </div>
-
-        <!-- Peringatan jika nilai < 100 -->
-        <div id="certWarning" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-xl text-rose-800 text-xs font-semibold max-w-lg mx-auto space-y-2.5">
-          <p>⚠️ Sertifikat hanya terbuka jika nilai Anda <strong>100</strong> (Benar semua 10 soal). Silakan ulangi kuis untuk memperbaiki jawaban!</p>
-          <button type="button" onclick="resetQuiz()" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow transition">
-            🔄 Ulangi Ujian Sekarang
+        <div class="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+          <button type="button" onclick="window.print()" class="px-5 py-3 rounded-xl bg-slate-800 text-white font-bold text-sm hover:bg-slate-900 shadow">
+            🖨️ Cetak / Simpan PDF
+          </button>
+          <button type="button" onclick="checkCertificateUnlock()" class="px-5 py-3 rounded-xl bg-amber-600 text-white font-bold text-sm hover:bg-amber-700 shadow flex items-center justify-center gap-2">
+            🏆 Ambil Sertifikat Resmi (Nilai 100)
+          </button>
+          <button type="button" id="sendWhatsApp" class="px-5 py-3 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 shadow flex items-center justify-center gap-2">
+            💬 Kirim Hasil ke WhatsApp Panitia
           </button>
         </div>
-
-        <!-- Tombol Aksi Hasil -->
-        <div class="pt-2 flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
-          <button type="button" onclick="checkCertificateUnlock()" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs sm:text-sm shadow transition flex items-center justify-center gap-2">
-            <span>🏆</span> Ambil Sertifikat Resmi (Nilai 100)
-          </button>
-          <button type="button" onclick="sendToWhatsApp()" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow transition flex items-center justify-center gap-2">
-            <span>💬</span> Kirim Hasil ke WhatsApp Panitia
-          </button>
-          <button type="button" onclick="window.print()" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-sm shadow transition flex items-center justify-center gap-2">
-            <span>🖨️</span> Cetak / Simpan Halaman
-          </button>
+        <div id="certWarning" class="text-xs font-bold text-rose-600 hidden mt-2 text-center">
+          ⚠️ Sertifikat hanya terbuka jika nilai Anda 100 (Benar semua 10 soal). Silakan ulangi kuis jika belum 100!
         </div>
-
-        <p class="text-xs text-slate-400 pt-1">Tunjukkan hasil ini atau kirim via WhatsApp kepada panitia Rumah Pemberdayaan Masyarakat.</p>
+        <p class="text-xs text-slate-400 text-center">Tunjukkan hasil ini atau kirim via WhatsApp kepada panitia Rumah Pemberdayaan Masyarakat.</p>
       </section>
-
     </div>
 
-    <!-- ==================== TAB 2: CEK & UNDUH SERTIFIKAT ==================== -->
+    <!-- TAB 2: CEK & UNDUH SERTIFIKAT -->
     <div id="sectionSertifikat" class="space-y-6 hidden">
       <section class="bg-white rounded-2xl p-5 sm:p-7 shadow-lg border border-blue-100 space-y-5 text-center">
-        <div class="inline-block bg-amber-100 text-amber-800 font-extrabold px-4 py-1.5 rounded-full text-xs tracking-wider uppercase">
-          Sertifikat Penghargaan Resmi
-        </div>
+        <div class="inline-block bg-amber-100 text-amber-800 font-bold px-4 py-1.5 rounded-full text-xs tracking-wider">SERTIFIKAT PENGHARGAAN RESMI</div>
         <h2 class="text-2xl font-black text-slate-900">Cek &amp; Unduh Sertifikat Pelatihan</h2>
-
-        <!-- Banner Terkunci -->
-        <div id="certLockBanner" class="bg-rose-50 border border-rose-200 p-4 rounded-xl text-rose-800 text-xs sm:text-sm font-medium max-w-lg mx-auto leading-relaxed">
-          🔒 <strong>Sertifikat Terkunci!</strong> Anda harus menyelesaikan Ujian Evaluasi dengan <strong>Nilai 100</strong> terlebih dahulu untuk membuka dan mengunduh sertifikat resmi ini.
+        
+        <!-- Lock status banner -->
+        <div id="certLockBanner" class="bg-rose-50 border border-rose-200 p-4 rounded-xl text-rose-800 text-xs font-semibold">
+          🔒 Sertifikat terkunci! Anda harus menyelesaikan Ujian Evaluasi dengan <strong>Nilai 100</strong> terlebih dahulu untuk dapat mengunduh sertifikat resmi ini.
         </div>
 
-        <!-- Konten Terbuka (Nilai 100) -->
         <div id="certUnlockContent" class="hidden space-y-5">
-          <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl text-emerald-800 text-xs sm:text-sm font-semibold max-w-lg mx-auto">
+          <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold max-w-lg mx-auto">
             🎉 Selamat! Nilai Anda 100. Periksa ejaan nama lengkap Anda di bawah ini sebelum mengunduh sertifikat.
           </div>
 
           <div class="max-w-md mx-auto text-left space-y-1.5">
             <label for="namaSertifikat" class="block font-bold text-xs text-slate-700">Nama Lengkap &amp; Gelar di Sertifikat</label>
-            <input id="namaSertifikat" placeholder="Contoh: Siti Aminah, S.Pd" oninput="syncNameInputs(this.value)" class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm font-bold text-slate-900">
+            <input id="namaSertifikat" placeholder="Contoh: Latif Politika" class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-sm font-bold text-center text-slate-900">
           </div>
 
-          <!-- Area Sertifikat yang Bisa Dicetak / Diunduh -->
-          <div id="printableArea" class="w-full max-w-2xl mx-auto">
-            <!-- Mode Gambar Template (Jika SERTIFIKAT_3.png tersedia) -->
-            <div id="imageCertWrapper" class="hidden relative w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-400">
-              <img id="certImagePreview" alt="Sertifikat Pelatihan RPM" class="w-full h-auto block">
-              <div id="certImageNameOverlay" class="font-serif-cert absolute top-[41.5%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[78%] text-center text-lg sm:text-3xl font-black text-blue-950 tracking-wide uppercase">
-                [NAMA PESERTA]
+          <!-- Printable Certificate Container (Dengan Kolom Nama Presisi di Tengah) -->
+          <div id="printableCertificate" class="relative w-full max-w-2xl mx-auto aspect-[1.414/1] rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-400 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-4 sm:p-7 text-white flex flex-col justify-between select-none">
+            <!-- Bingkai Dalam Emas -->
+            <div class="absolute inset-2 sm:inset-3 border-2 border-amber-400/70 rounded-xl pointer-events-none"></div>
+            <div class="absolute inset-3 sm:inset-4 border border-amber-300/30 rounded-lg pointer-events-none"></div>
+            
+            <!-- Header Sertifikat -->
+            <div class="relative z-10 flex flex-col items-center pt-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 bg-amber-400 text-slate-950 font-black text-[9px] sm:text-xs rounded">WDM</span>
+                <span class="text-[10px] sm:text-xs font-extrabold tracking-widest text-amber-300 uppercase">PT WEB DIGITAL MARKETING</span>
+              </div>
+              <h3 class="text-2xl sm:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 drop-shadow">
+                SERTIFIKAT
+              </h3>
+              <div class="mt-1 px-5 py-0.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 text-slate-950 font-bold italic text-[10px] sm:text-xs rounded-full shadow">
+                Diberikan kepada :
               </div>
             </div>
 
-            <!-- Mode Desain Digital Premium (Default & Fallback otomatis) -->
-            <div id="vectorCertWrapper" class="relative w-full aspect-[1.414/1] rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-400 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 p-5 sm:p-8 text-white flex flex-col justify-between text-center">
-              <!-- Bingkai Dalam Emas -->
-              <div class="absolute inset-2.5 border-2 border-amber-300/60 rounded-xl pointer-events-none"></div>
-              <div class="absolute inset-4 border border-amber-300/25 rounded-lg pointer-events-none"></div>
+            <!-- KOLOM PITA NAMA PESERTA (Tepat di Tengah Vertikal & Horizontal) -->
+            <div class="relative z-10 w-full max-w-[82%] mx-auto my-1">
+              <div class="w-full min-h-[44px] sm:min-h-[58px] bg-[#fdf6e7] border-2 border-amber-500 rounded-xl shadow-inner flex items-center justify-center px-4 py-1.5">
+                <span id="certNameText" class="font-serif-cert font-black text-slate-900 text-lg sm:text-3xl tracking-wide uppercase leading-none text-center truncate w-full">
+                  LATIF POLITIKA
+                </span>
+              </div>
+            </div>
 
-              <!-- Header Sertifikat -->
-              <div class="relative z-10 flex justify-between items-start px-2 sm:px-4 pt-1">
-                <div class="text-left">
-                  <div class="text-[9px] sm:text-xs font-extrabold text-emerald-400 tracking-wider">RUMAH PEMBERDAYAAN MASYARAKAT</div>
-                  <div class="text-[8px] sm:text-[10px] text-blue-200 font-medium">PT WEB DIGITAL MARKETING</div>
-                </div>
-                <div class="text-right">
-                  <div class="text-[9px] sm:text-xs font-bold text-amber-300">22 November 2026</div>
-                  <div class="text-[8px] sm:text-[10px] text-slate-300">Indoor Futsal RT 7 Kelet</div>
+            <!-- Keterangan Kegiatan -->
+            <div class="relative z-10 space-y-1.5 px-4">
+              <p class="text-[9px] sm:text-xs text-slate-200 leading-tight max-w-md mx-auto">
+                Sebagai tanda penghargaan atas partisipasi dan penyelesaian dengan <strong>Nilai Sempurna (100)</strong> dalam kegiatan pelatihan:
+              </p>
+              <div class="inline-block bg-blue-900/90 border border-amber-400/60 px-4 sm:px-6 py-1.5 rounded-xl shadow-lg">
+                <div class="text-[9px] sm:text-[11px] font-bold text-emerald-300">Mengenal dan Kuasai</div>
+                <div class="text-base sm:text-2xl font-black text-white tracking-tight leading-none">ChatGPT &amp; AI</div>
+              </div>
+              <p class="text-[8px] sm:text-[10px] italic text-amber-200/90">
+                "Memanfaatkan AI untuk Produktivitas, Kreativitas dan Masa Depan Digital"
+              </p>
+            </div>
+
+            <!-- Footer & Tanda Tangan -->
+            <div class="relative z-10 flex justify-between items-end px-3 sm:px-6 pt-1 text-[9px] sm:text-xs">
+              <div class="text-left bg-slate-950/60 border border-amber-400/30 rounded-lg p-2 hidden sm:block">
+                <div class="font-bold text-amber-300 text-[9px] mb-0.5">Materi Pelatihan:</div>
+                <ul class="text-[8px] text-slate-300 space-y-0.5">
+                  <li>✔ Mengenal AI &amp; ChatGPT</li>
+                  <li>✔ Teknik Prompt Efektif</li>
+                  <li>✔ Produktivitas &amp; Etika AI</li>
+                </ul>
+              </div>
+
+              <div class="text-center mx-auto sm:mx-0">
+                <div class="text-[9px] sm:text-[10px] text-slate-300">Kelet, 22 November 2026</div>
+                <div class="font-bold text-amber-300 text-[9px] sm:text-[10px]">PT WEB DIGITAL MARKETING &amp; RPM</div>
+                <div class="font-serif-cert italic text-sm sm:text-lg text-white font-bold mt-2 mb-0.5">Latif Safruddin</div>
+                <div class="text-[9px] sm:text-[10px] font-bold text-slate-300 border-t border-amber-400/50 pt-0.5 px-3">
+                  Direktur / Penyelenggara
                 </div>
               </div>
 
-              <!-- Isi Tengah Sertifikat -->
-              <div class="relative z-10 space-y-2 sm:space-y-3 my-auto px-2">
-                <div class="inline-block bg-amber-400 text-blue-950 font-black text-[10px] sm:text-xs px-4 py-1 rounded-full uppercase tracking-widest shadow">
-                  SERTIFIKAT PENGHARGAAN
-                </div>
-                <div class="text-[11px] sm:text-sm text-blue-200 font-medium">Diberikan Kepada:</div>
-
-                <div id="certNameText" class="font-serif-cert text-xl sm:text-4xl font-black text-amber-300 tracking-wide underline decoration-amber-400/50 underline-offset-8 px-2 py-1 break-words">
-                  [Nama Peserta]
-                </div>
-
-                <p class="text-[10px] sm:text-xs text-slate-200 max-w-lg mx-auto leading-relaxed pt-1 sm:pt-2">
-                  Atas partisipasi dan kelulusannya dengan predikat <strong>Sangat Memuaskan (Nilai 100)</strong> dalam kegiatan <strong>Pelatihan Mengenal AI dan Menguasai ChatGPT Untuk Semua</strong> yang diselenggarakan oleh PT Web Digital Marketing &amp; Rumah Pemberdayaan Masyarakat.
-                </p>
-              </div>
-
-              <!-- Tanda Tangan Footer Sertifikat -->
-              <div class="relative z-10 flex justify-between items-end px-3 sm:px-6 pt-3 border-t border-blue-800/70 text-[10px] sm:text-xs">
-                <div class="text-left">
-                  <div class="text-[8px] sm:text-[10px] text-slate-400">Didukung Oleh:</div>
-                  <div class="font-bold text-amber-300">PT Web Digital Marketing</div>
-                </div>
-                <div class="text-center">
-                  <div class="font-serif-cert italic text-sm sm:text-lg text-blue-100 font-bold">Syaiful Umar, S.Pd</div>
-                  <div class="text-[9px] sm:text-[11px] font-bold text-slate-300 border-t border-slate-500 pt-0.5 mt-0.5">Ketua Umum RPM</div>
-                </div>
+              <div class="text-right bg-slate-950/60 border border-amber-400/30 rounded-lg p-2 hidden sm:block">
+                <div class="text-[8px] text-amber-300 font-bold">Belajar AI</div>
+                <div class="text-[8px] text-slate-300">Berkarya Digital Bersama</div>
+                <div class="text-[8px] text-emerald-400 font-bold">Rumah Pemberdayaan</div>
               </div>
             </div>
           </div>
 
-          <!-- Tombol Unduh & Cetak -->
+          <!-- Tombol Unduh PNG & PDF -->
           <div class="pt-2 flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
-            <button type="button" onclick="downloadCertificatePNG()" class="flex-1 py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center gap-2">
-              <span>🖼️</span> Unduh Gambar (PNG)
+            <button type="button" onclick="downloadCertificatePNG()" class="flex-1 py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow transition flex items-center justify-center gap-2">
+              🖼️ Unduh Gambar (PNG)
             </button>
-            <button type="button" onclick="printCertificatePDF()" class="flex-1 py-3.5 px-4 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center gap-2">
-              <span>📥</span> Cetak / Simpan PDF
+            <button type="button" onclick="downloadCertificatePDF()" class="flex-1 py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow transition flex items-center justify-center gap-2">
+              📥 Cetak / Simpan PDF
             </button>
           </div>
         </div>
 
         <div class="pt-2">
-          <button type="button" onclick="switchTab('quiz')" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs sm:text-sm transition">
-            ← Kembali ke Ujian / Soal
+          <button onclick="switchTab('quiz')" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+            Kembali ke Ujian / Soal
           </button>
         </div>
       </section>
     </div>
-
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center text-slate-500 text-xs py-6 px-4 border-t border-slate-200/60 bg-white/50">
-    <p>Rumah Pemberdayaan Masyarakat (RPM)</p>
-    <p class="font-bold text-slate-700 mt-0.5">Bersama Berdaya Menuju Sejahtera</p>
-  </footer>
-
   <script>
-    // ==================== KONFIGURASI & DATA SOAL ====================
-    // Nomor WhatsApp Panitia (format internasional tanpa +, contoh: 6281234567890)
-    // Kosongkan string '' jika ingin membuka WhatsApp pilih kontak manual
-    const PANITIA_WA_NUMBER = ""; 
-
-    const quizData = [
+    // Bank soal evaluasi pelatihan AI & ChatGPT
+    const data = [
       {
-        q: "Apa yang dimaksud dengan AI?",
-        o: [
-          "A. Aplikasi untuk bermain game",
-          "B. Teknologi yang membantu manusia mengolah informasi dan menyelesaikan tugas",
-          "C. Alat untuk memperbaiki HP",
-          "D. Mesin pencetak dokumen"
-        ],
+        q: "1. Apa kepanjangan dari AI dalam dunia teknologi digital?",
+        options: ["Automated Internet", "Artificial Intelligence", "Advanced Interface", "Audio Integration"],
         a: 1
       },
       {
-        q: "Apa fungsi utama ChatGPT?",
-        o: [
-          "A. Mengajak berinteraksi untuk membantu menjawab pertanyaan dan membuat tulisan",
-          "B. Mengisi pulsa HP",
-          "C. Mengganti jaringan internet",
-          "D. Memperbaiki perangkat komputer"
-        ],
+        q: "2. Apa fungsi utama dari ChatGPT?",
+        options: ["Asisten AI berbasis percakapan untuk menjawab, menulis, dan ide kreatif", "Aplikasi pengedit video otomatis", "Antivirus komputer", "Sistem operasi pengganti Windows"],
         a: 0
       },
       {
-        q: "Apa yang dimaksud dengan prompt?",
-        o: [
-          "A. Nama aplikasi Google",
-          "B. Hasil akhir sebuah video",
-          "C. Kalimat perintah atau pertanyaan yang diberikan kepada AI",
-          "D. Kata sandi akun"
-        ],
-        a: 2
-      },
-      {
-        q: "Dalam rumus prompt 4 bagian, bagian yang benar adalah ...",
-        o: [
-          "A. Nama, alamat, nomor HP, password",
-          "B. Peran, tugas, informasi, dan gaya",
-          "C. Foto, video, musik, warna",
-          "D. Judul, harga, diskon, alamat"
-        ],
+        q: "3. Apa sebutan untuk perintah atau instruksi teks yang kita ketikkan ke ChatGPT?",
+        options: ["Coding", "Prompt", "Script", "Link"],
         a: 1
       },
       {
-        q: "Jika ingin membuat berita kegiatan warga menggunakan ChatGPT, apa yang harus disiapkan?",
-        o: [
-          "A. Fakta nama kegiatan, tanggal, tempat, peserta, dan hasil kegiatan",
-          "B. Cerita yang dibuat-buat",
-          "C. Kata sandi pengurus",
-          "D. Informasi yang belum diketahui"
-        ],
-        a: 0
-      },
-      {
-        q: "Apa yang harus dilakukan setelah ChatGPT menghasilkan tulisan?",
-        o: [
-          "A. Langsung disebarkan tanpa dibaca",
-          "B. Menghapus semua hasilnya",
-          "C. Memeriksa nama, tanggal, lokasi, angka, dan kebenaran informasi",
-          "D. Menganggap semuanya pasti benar"
-        ],
-        a: 2
-      },
-      {
-        q: "Apa tujuan menggunakan ChatGPT untuk promosi UMKM?",
-        o: [
-          "A. Menghapus produk usaha",
-          "B. Membantu membuat teks promosi yang menarik dan sesuai produk",
-          "C. Mengubah harga tanpa izin pemilik",
-          "D. Menghilangkan kontak usaha"
-        ],
+        q: "4. Bagaimana cara agar jawaban ChatGPT lebih akurat dan sesuai harapan kita?",
+        options: ["Mengetik satu kata saja", "Memberikan konteks, peran, dan detail tujuan yang jelas", "Menggunakan huruf kapital semua", "Mengulang pertanyaan yang sama 10 kali"],
         a: 1
       },
       {
-        q: "Apa langkah awal membuat video menggunakan Google Flow?",
-        o: [
-          "A. Membuka browser Chrome dan masuk ke Google Flow menggunakan akun Google",
-          "B. Mematikan internet",
-          "C. Menghapus akun Google",
-          "D. Membuka aplikasi kalkulator"
-        ],
+        q: "5. Manakah contoh pemanfaatan ChatGPT yang tepat untuk pelaku UMKM?",
+        options: ["Membuat ide konten promosi dan deskripsi produk menarik", "Menghapus utang bank secara otomatis", "Menggantikan seluruh karyawan tanpa pengawasan", "Meretas akun kompetitor"],
         a: 0
       },
       {
-        q: "Apa yang perlu dijelaskan dalam prompt video agar hasilnya sesuai keinginan?",
-        o: [
-          "A. Hanya nama pembuat video",
-          "B. Hanya warna HP",
-          "C. Subjek, aksi, lokasi, pencahayaan, dan gaya video",
-          "D. Password akun Google"
-        ],
-        a: 2
+        q: "6. Apa yang dimaksud dengan 'halusinasi AI' pada ChatGPT?",
+        options: ["AI bisa melihat gambar 3D", "AI memberikan informasi yang terdengar meyakinkan padahal keliru/tidak faktual", "AI mengalami kerusakan layar", "AI menolak menjawab pertanyaan"],
+        a: 1
       },
       {
-        q: "Manakah tindakan yang benar dalam menggunakan AI secara aman dan bertanggung jawab?",
-        o: [
-          "A. Membagikan kode OTP kepada AI",
-          "B. Menyebarkan berita yang belum diperiksa",
-          "C. Mengunggah foto orang tanpa izin",
-          "D. Memeriksa fakta dan menjaga data pribadi"
+        q: "7. Sikap bijak yang wajib dilakukan setelah mendapatkan informasi dari ChatGPT adalah...",
+        options: ["Langsung menyebarkan tanpa membaca", "Melakukan pengecekan ulang (fact-checking) dan penyuntingan", "Menganggapnya 100% selalu benar", "Menyimpannya tanpa digunakan"],
+        a: 1
+      },
+      {
+        q: "8. Data apa yang SEBAIKNYA TIDAK dimasukkan ke dalam percakapan ChatGPT publik?",
+        options: ["Ide resep masakan", "PIN ATM, kata sandi (password), dan NIK KTP pribadi", "Kerangka artikel pendidikan", "Terjemahan bahasa Inggris"],
+        a: 1
+      },
+      {
+        q: "9. Bagaimana peran AI terhadap pekerjaan manusia di masa kini?",
+        options: ["Alat bantu untuk mempercepat produktivitas dan kreativitas manusia", "Musuh yang harus dihindari sepenuhnya", "Hanya bisa dipakai oleh programmer ahli", "Pengganti akal budi dan empati manusia sepenuhnya"],
+        a: 0
+      },
+      {
+        q: "10. Contoh prompt terbaik untuk meminta bantuan membuat surat undangan adalah...",
+        options: [
+          "Buatkan surat.",
+          "Bertindaklah sebagai sekretaris desa, buatkan surat undangan rapat karang taruna hari Minggu pukul 19.30 dengan bahasa sopan dan formal.",
+          "Surat undangan rapat.",
+          "Tolong ketikkan sesuatu."
         ],
-        a: 3
+        a: 1
       }
     ];
 
-    // State Aplikasi
     let userScore = 0;
     let finalScoreData = null;
-    let hasCustomCertImage = false;
-    const baseCertImg = new Image();
+    const form = document.getElementById('quizForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const questionsContainer = document.getElementById('questionsContainer');
 
-    // ==================== NOTIFIKASI TOAST KUSTOM ====================
-    let toastTimeout;
-    function showToast(title, message, icon = "⚠️") {
-      const box = document.getElementById('toastBox');
-      document.getElementById('toastTitle').textContent = title;
-      document.getElementById('toastMessage').textContent = message;
+    // Custom notification helper
+    function showToast(msg, icon = 'ℹ️') {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
       document.getElementById('toastIcon').textContent = icon;
-
-      box.classList.remove('-translate-y-24', 'opacity-0', 'pointer-events-none');
-      box.classList.add('translate-y-0', 'opacity-100');
-
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(hideToast, 4500);
+      toast.classList.remove('hidden');
+      clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
     }
 
-    function hideToast() {
-      const box = document.getElementById('toastBox');
-      box.classList.add('-translate-y-24', 'opacity-0', 'pointer-events-none');
-      box.classList.remove('translate-y-0', 'opacity-100');
+    // Render semua soal ke dalam DOM
+    function renderQuestions() {
+      questionsContainer.innerHTML = data.map((item, idx) => `
+        <div class="p-4 sm:p-5 rounded-xl border border-slate-200 bg-white hover:border-blue-300 transition space-y-3">
+          <p class="font-bold text-sm sm:text-base text-slate-900">${item.q}</p>
+          <div class="space-y-2">
+            ${item.options.map((opt, optIdx) => `
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-blue-50/60 transition">
+                <input type="radio" name="q${idx}" value="${optIdx}" required class="mt-0.5 w-4 h-4 text-blue-600 focus:ring-blue-500">
+                <span class="text-xs sm:text-sm text-slate-700 font-medium">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
     }
 
-    // ==================== INISIALISASI TEMPLATE SERTIFIKAT ====================
-    baseCertImg.crossOrigin = "anonymous";
-    baseCertImg.src = "SERTIFIKAT_3.png";
-
-    baseCertImg.onload = function() {
-      if (baseCertImg.naturalWidth > 0) {
-        hasCustomCertImage = true;
-        document.getElementById('certImagePreview').src = baseCertImg.src;
-        document.getElementById('imageCertWrapper').classList.remove('hidden');
-        document.getElementById('vectorCertWrapper').classList.add('hidden');
-      }
-    };
-
-    baseCertImg.onerror = function() {
-      // Gunakan desain sertifikat digital bawaan jika file SERTIFIKAT_3.png tidak ditemukan
-      hasCustomCertImage = false;
-      document.getElementById('imageCertWrapper').classList.add('hidden');
-      document.getElementById('vectorCertWrapper').classList.remove('hidden');
-    };
-
-    // ==================== SINKRONISASI NAMA & TAB ====================
-    function syncNameInputs(val) {
-      const inputMain = document.getElementById('nama');
-      const inputCert = document.getElementById('namaSertifikat');
-      if (inputMain.value !== val) inputMain.value = val;
-      if (inputCert.value !== val) inputCert.value = val;
-
-      const displayText = val.trim() ? val.trim() : '[Nama Peserta]';
-      document.getElementById('certNameText').textContent = displayText;
-      document.getElementById('certImageNameOverlay').textContent = val.trim() ? val.trim().toUpperCase() : '[NAMA PESERTA]';
-    }
-
+    // Navigasi antar Tab
     function switchTab(tab) {
       const secQuiz = document.getElementById('sectionQuiz');
       const secCert = document.getElementById('sectionSertifikat');
       const btnQuiz = document.getElementById('tabQuizBtn');
-      const btnCert = document.getElementById('tabCertBtn');
+      const btnCert = document.getElementById('tabSertifikatBtn');
 
       if (tab === 'quiz') {
         secQuiz.classList.remove('hidden');
         secCert.classList.add('hidden');
-        btnQuiz.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-700 text-white shadow-sm flex items-center justify-center gap-2";
-        btnCert.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition text-slate-600 hover:bg-slate-100 flex items-center justify-center gap-2";
+        btnQuiz.className = "px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-600 text-white shadow";
+        btnCert.className = "px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-slate-200 text-slate-700 hover:bg-slate-300";
       } else {
         secQuiz.classList.add('hidden');
         secCert.classList.remove('hidden');
-        btnCert.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-700 text-white shadow-sm flex items-center justify-center gap-2";
-        btnQuiz.className = "py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition text-slate-600 hover:bg-slate-100 flex items-center justify-center gap-2";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        btnCert.className = "px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-blue-600 text-white shadow";
+        btnQuiz.className = "px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition bg-slate-200 text-slate-700 hover:bg-slate-300";
       }
     }
 
+    // Cek syarat nilai 100 untuk membuka sertifikat
     function checkCertificateUnlock() {
       if (userScore === 100) {
         document.getElementById('certLockBanner').classList.add('hidden');
         document.getElementById('certUnlockContent').classList.remove('hidden');
+        const namaInput = document.getElementById('nama').value.trim();
+        if (namaInput) {
+          document.getElementById('namaSertifikat').value = namaInput;
+          document.getElementById('certNameText').textContent = namaInput.toUpperCase();
+        }
         switchTab('sertifikat');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         document.getElementById('certWarning').classList.remove('hidden');
-        showToast(
-          "Sertifikat Masih Terkunci",
-          `Nilai Anda saat ini ${userScore}/100. Anda harus meraih nilai 100 untuk mengunduh sertifikat.`,
-          "🔒"
-        );
+        showToast('Sertifikat terkunci! Nilai Anda saat ini ' + userScore + '/100. Butuh nilai 100.', '🔒');
       }
     }
 
-    // ==================== RENDER SOAL & LOGIKA KUIS ====================
-    const questionsHost = document.getElementById('questions');
-    quizData.forEach((item, i) => {
-      const qDiv = document.createElement('div');
-      qDiv.className = 'py-5 first:pt-2';
-
-      const qTitle = document.createElement('p');
-      qTitle.className = 'font-bold text-sm sm:text-base text-slate-800 leading-relaxed mb-3';
-      qTitle.textContent = `${i + 1}. ${item.q}`;
-      qDiv.appendChild(qTitle);
-
-      const optsWrap = document.createElement('div');
-      optsWrap.className = 'space-y-2';
-
-      item.o.forEach((optText, j) => {
-        const label = document.createElement('label');
-        label.className = 'flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-blue-50/60 hover:border-blue-300 cursor-pointer transition select-none text-xs sm:text-sm text-slate-700';
-
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = `q${i}`;
-        radio.value = j;
-        radio.className = 'mt-0.5 w-4 h-4 accent-blue-700 shrink-0 cursor-pointer';
-
-        const span = document.createElement('span');
-        span.className = 'leading-snug';
-        span.textContent = optText;
-
-        label.append(radio, span);
-        optsWrap.appendChild(label);
-      });
-
-      qDiv.appendChild(optsWrap);
-      questionsHost.appendChild(qDiv);
+    // Sinkronisasi input nama sertifikat secara real-time tepat di tengah kotak
+    document.getElementById('namaSertifikat').addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      document.getElementById('certNameText').textContent = val ? val.toUpperCase() : '[NAMA PESERTA]';
     });
 
-    const quizForm = document.getElementById('quizForm');
-    const submitBtn = document.getElementById('submitBtn');
-
-    function updateProgress() {
-      const answeredCount = quizData.filter((_, i) => quizForm.querySelector(`input[name="q${i}"]:checked`)).length;
-      document.getElementById('bar').style.width = `${answeredCount * 10}%`;
-      document.getElementById('progressText').textContent = `${answeredCount} dari 10 soal dijawab`;
-      submitBtn.disabled = answeredCount !== quizData.length;
+    // Cetak / Unduh PDF Sertifikat
+    function downloadCertificatePDF() {
+      const namaCert = document.getElementById('namaSertifikat').value.trim();
+      if (!namaCert) {
+        showToast('Silakan ketik nama lengkap Anda terlebih dahulu pada kolom sertifikat.', '⚠️');
+        document.getElementById('namaSertifikat').focus();
+        return;
+      }
+      window.print();
     }
 
-    quizForm.addEventListener('change', updateProgress);
+    // Unduh Gambar PNG Resolusi Tinggi (Koordinat Y Presisi di Tengah Kotak Nama)
+    function downloadCertificatePNG() {
+      const namaCert = document.getElementById('namaSertifikat').value.trim();
+      if (!namaCert) {
+        showToast('Silakan ketik nama lengkap Anda terlebih dahulu.', '⚠️');
+        document.getElementById('namaSertifikat').focus();
+        return;
+      }
 
-    quizForm.addEventListener('submit', (e) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1600;
+      canvas.height = 1131; // Rasio A4 Landscape (1.414:1)
+      const ctx = canvas.getContext('2d');
+
+      // 1. Background Gradien Biru Gelap
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#0f172a');
+      grad.addColorStop(0.5, '#172554');
+      grad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 2. Bingkai Emas
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(36, 36, canvas.width - 72, canvas.height - 72);
+      ctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(58, 58, canvas.width - 116, canvas.height - 116);
+
+      // 3. Header
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#fcd34d';
+      ctx.font = 'bold 26px Inter, sans-serif';
+      ctx.fillText('PT WEB DIGITAL MARKETING • RUMAH PEMBERDAYAAN MASYARAKAT', canvas.width / 2, 135);
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '900 84px Inter, sans-serif';
+      ctx.fillText('SERTIFIKAT', canvas.width / 2, 235);
+
+      // Pita "Diberikan kepada :"
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.roundRect(canvas.width / 2 - 200, 265, 400, 48, 24);
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'italic bold 24px Inter, sans-serif';
+      ctx.fillText('Diberikan kepada :', canvas.width / 2, 297);
+
+      // 4. Kotak Pita Nama Peserta (Y: 355 - 475, Titik Tengah Y = 415)
+      const boxW = 1140;
+      const boxH = 120;
+      const boxX = (canvas.width - boxW) / 2;
+      const boxY = 355;
+
+      ctx.fillStyle = '#fdf6e7';
+      ctx.beginPath();
+      ctx.roundRect(boxX, boxY, boxW, boxH, 22);
+      ctx.fill();
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Teks Nama Peserta Tepat di Tengah Kotak (textBaseline = 'middle')
+      ctx.fillStyle = '#0f172a';
+      ctx.textBaseline = 'middle';
+      let fontSize = 58;
+      ctx.font = `900 ${fontSize}px Georgia, serif`;
+      const displayName = namaCert.toUpperCase();
+      while (ctx.measureText(displayName).width > boxW - 80 && fontSize > 28) {
+        fontSize -= 2;
+        ctx.font = `900 ${fontSize}px Georgia, serif`;
+      }
+      ctx.fillText(displayName, canvas.width / 2, boxY + boxH / 2);
+
+      // Reset baseline
+      ctx.textBaseline = 'alphabetic';
+
+      // 5. Deskripsi Pelatihan
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '26px Inter, sans-serif';
+      ctx.fillText('Sebagai tanda penghargaan atas partisipasi dan penyelesaian dengan Nilai Sempurna (100)', canvas.width / 2, 545);
+      ctx.fillText('dalam kegiatan pelatihan:', canvas.width / 2, 582);
+
+      // Kotak Judul Pelatihan
+      ctx.fillStyle = 'rgba(30, 58, 138, 0.9)';
+      ctx.beginPath();
+      ctx.roundRect(canvas.width / 2 - 420, 615, 840, 145, 24);
+      ctx.fill();
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.fillStyle = '#6ee7b7';
+      ctx.font = 'bold 26px Inter, sans-serif';
+      ctx.fillText('Mengenal dan Kuasai', canvas.width / 2, 662);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 58px Inter, sans-serif';
+      ctx.fillText('ChatGPT & AI', canvas.width / 2, 728);
+
+      ctx.fillStyle = '#fde68a';
+      ctx.font = 'italic 22px Inter, sans-serif';
+      ctx.fillText('"Memanfaatkan AI untuk Produktivitas, Kreativitas dan Masa Depan Digital"', canvas.width / 2, 805);
+
+      // 6. Tanda Tangan
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '22px Inter, sans-serif';
+      ctx.fillText('Kelet, 22 November 2026', canvas.width / 2, 875);
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 22px Inter, sans-serif';
+      ctx.fillText('PT WEB DIGITAL MARKETING & RPM', canvas.width / 2, 908);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'italic bold 40px Georgia, serif';
+      ctx.fillText('Latif Safruddin', canvas.width / 2, 985);
+
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2 - 160, 1002);
+      ctx.lineTo(canvas.width / 2 + 160, 1002);
+      ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = 'bold 22px Inter, sans-serif';
+      ctx.fillText('Direktur / Penyelenggara', canvas.width / 2, 1032);
+
+      // Trigger Download
+      const link = document.createElement('a');
+      link.download = `Sertifikat-AI-${namaCert.replace(/\s+/g, '-')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Sertifikat PNG berhasil diunduh!', '🖼️');
+    }
+
+    // Simulasi cepat untuk pratinjau nilai 100
+    function autoFillPerfect() {
+      if (!document.getElementById('nama').value.trim()) {
+        document.getElementById('nama').value = 'Latif Politika';
+      }
+      if (!document.getElementById('hp').value.trim()) {
+        document.getElementById('hp').value = '081234567890';
+      }
+      data.forEach((item, idx) => {
+        const radio = form.querySelector(`input[name="q${idx}"][value="${item.a}"]`);
+        if (radio) radio.checked = true;
+      });
+      showToast('Semua jawaban benar telah dipilih! Klik tombol Kumpulkan Ujian.', '⚡');
+    }
+
+    // Reset kuis jika peserta ingin mengulang
+    function resetQuiz() {
+      form.reset();
+      submitBtn.disabled = false;
+      document.getElementById('resetBtn').classList.add('hidden');
+      document.getElementById('result').classList.add('hidden');
+      document.getElementById('certWarning').classList.add('hidden');
+      userScore = 0;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Submit form evaluasi
+    form.addEventListener('submit', e => {
       e.preventDefault();
-
       const nama = document.getElementById('nama').value.trim();
       const hp = document.getElementById('hp').value.trim();
 
-      if (!nama) {
-        showToast("Nama Belum Diisi", "Mohon isi nama lengkap Anda terlebih dahulu pada kolom Data Peserta.", "👤");
-        document.getElementById('nama').focus();
+      if (!nama || !hp) {
+        showToast('Mohon isi nama lengkap dan nomor HP terlebih dahulu.', '⚠️');
+        document.getElementById(!nama ? 'nama' : 'hp').focus();
         return;
       }
 
       const digits = hp.replace(/\D/g, '');
       if (digits.length < 9 || digits.length > 15) {
-        showToast("Nomor HP Tidak Valid", "Mohon masukkan nomor HP / WhatsApp yang valid (9–15 digit angka).", "📱");
+        showToast('Periksa kembali nomor HP. Masukkan 9–15 angka.', '⚠️');
         document.getElementById('hp').focus();
         return;
       }
 
       let correct = 0;
-      quizData.forEach((item, i) => {
-        const chosen = quizForm.querySelector(`input[name="q${i}"]:checked`);
-        if (chosen && Number(chosen.value) === item.a) {
-          correct++;
-        }
+      data.forEach((item, i) => {
+        const chosen = form.querySelector('input[name="q' + i + '"]:checked');
+        if (chosen && Number(chosen.value) === item.a) correct++;
       });
 
       userScore = correct * 10;
@@ -603,232 +602,47 @@
         1: ['Ayo Terus Belajar!', 'Tidak apa-apa. Belajar AI adalah proses. Baca modul dan coba lagi.']
       };
 
-      finalScoreData = {
-        nama,
-        hp,
-        score: userScore,
-        correct,
-        level: messages[stars][0]
-      };
+      finalScoreData = { nama, hp, score: userScore, correct, level: messages[stars][0] };
 
-      document.getElementById('greeting').textContent = `Selamat, ${nama}!`;
-      document.getElementById('score').textContent = `${userScore}/100`;
+      document.getElementById('greeting').textContent = 'Selamat, ' + nama + '!';
+      document.getElementById('score').textContent = userScore + '/100';
       document.getElementById('stars').textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
       document.getElementById('level').textContent = messages[stars][0];
       document.getElementById('feedback').textContent = messages[stars][1];
       document.getElementById('rNama').textContent = nama;
       document.getElementById('rHp').textContent = hp;
-      document.getElementById('correct').textContent = `Jawaban benar: ${correct} dari 10 soal (10 poin/soal).`;
-
-      syncNameInputs(nama);
+      document.getElementById('correct').textContent = 'Jawaban benar: ' + correct + ' dari 10 soal. Setiap jawaban benar bernilai 10 poin.';
 
       if (userScore === 100) {
         document.getElementById('certLockBanner').classList.add('hidden');
         document.getElementById('certUnlockContent').classList.remove('hidden');
+        document.getElementById('namaSertifikat').value = nama;
+        document.getElementById('certNameText').textContent = nama.toUpperCase();
         document.getElementById('certWarning').classList.add('hidden');
-        showToast("Nilai Sempurna 100!", "Selamat! Sertifikat resmi Anda telah terbuka dan siap diunduh.", "🏆");
+        showToast('Selamat! Nilai Anda 100. Sertifikat resmi telah terbuka!', '🏆');
       } else {
         document.getElementById('certLockBanner').classList.remove('hidden');
         document.getElementById('certUnlockContent').classList.add('hidden');
-        document.getElementById('certWarning').classList.remove('hidden');
+        showToast('Ujian selesai! Nilai Anda: ' + userScore + '/100.', '✅');
       }
 
-      const resultEl = document.getElementById('result');
-      resultEl.classList.remove('hidden');
-      resultEl.scrollIntoView({ behavior: 'smooth' });
+      const resultBox = document.getElementById('result');
+      resultBox.style.display = 'block';
+      resultBox.classList.remove('hidden');
+      resultBox.scrollIntoView({ behavior: 'smooth' });
       submitBtn.disabled = true;
+      document.getElementById('resetBtn').classList.remove('hidden');
     });
 
-    function resetQuiz() {
-      quizForm.reset();
-      userScore = 0;
-      finalScoreData = null;
-      updateProgress();
-      document.getElementById('result').classList.add('hidden');
-      document.getElementById('certLockBanner').classList.remove('hidden');
-      document.getElementById('certUnlockContent').classList.add('hidden');
-      document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
-    }
+    // Kirim hasil ke WhatsApp Panitia
+    document.getElementById('sendWhatsApp').addEventListener('click', () => {
+      if (!finalScoreData) return;
+      const text = `Halo Panitia Rumah Pemberdayaan Masyarakat,%0A%0ASaya telah menyelesaikan *Ujian Evaluasi Pelatihan AI & ChatGPT*:%0A• *Nama:* ${encodeURIComponent(finalScoreData.nama)}%0A• *No. HP:* ${encodeURIComponent(finalScoreData.hp)}%0A• *Nilai:* ${finalScoreData.score}/100 (${finalScoreData.correct}/10 benar)%0A• *Predikat:* ${encodeURIComponent(finalScoreData.level)}%0A%0ATerima kasih!`;
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    });
 
-    // ==================== KIRIM HASIL KE WHATSAPP ====================
-    function sendToWhatsApp() {
-      if (!finalScoreData) {
-        showToast("Belum Ada Hasil", "Silakan selesaikan evaluasi terlebih dahulu.", "⚠️");
-        return;
-      }
-
-      const statusSertifikat = finalScoreData.score === 100 ? "✅ LULUS (Sertifikat Terbuka)" : "⏳ Belum Nilai 100";
-      const text = 
-        `*LAPORAN HASIL EVALUASI PELATIHAN AI & CHATGPT*\n` +
-        `_Rumah Pemberdayaan Masyarakat_\n\n` +
-        `👤 *Nama:* ${finalScoreData.nama}\n` +
-        `📱 *No. HP:* ${finalScoreData.hp}\n` +
-        `🎯 *Nilai:* ${finalScoreData.score}/100 (${finalScoreData.correct}/10 benar)\n` +
-        `⭐ *Predikat:* ${finalScoreData.level}\n` +
-        `🏆 *Status:* ${statusSertifikat}`;
-
-      const encodedText = encodeURIComponent(text);
-      const waUrl = PANITIA_WA_NUMBER 
-        ? `https://wa.me/${PANITIA_WA_NUMBER}?text=${encodedText}`
-        : `https://wa.me/?text=${encodedText}`;
-
-      window.open(waUrl, '_blank');
-    }
-
-    // ==================== UNDUH & CETAK SERTIFIKAT ====================
-    function printCertificatePDF() {
-      const namaVal = document.getElementById('namaSertifikat').value.trim();
-      if (!namaVal) {
-        showToast("Nama Kosong", "Mohon ketik nama lengkap Anda di kolom sertifikat terlebih dahulu.", "✍️");
-        document.getElementById('namaSertifikat').focus();
-        return;
-      }
-      window.print();
-    }
-
-    function downloadCertificatePNG() {
-      const namaVal = document.getElementById('namaSertifikat').value.trim();
-      if (!namaVal) {
-        showToast("Nama Kosong", "Mohon ketik nama lengkap Anda di kolom sertifikat terlebih dahulu.", "✍️");
-        document.getElementById('namaSertifikat').focus();
-        return;
-      }
-
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (hasCustomCertImage && baseCertImg.complete && baseCertImg.naturalWidth !== 0) {
-        // Render menggunakan template gambar SERTIFIKAT_3.png
-        canvas.width = baseCertImg.naturalWidth;
-        canvas.height = baseCertImg.naturalHeight;
-        ctx.drawImage(baseCertImg, 0, 0);
-
-        ctx.font = "bold 52px 'Playfair Display', 'Times New Roman', serif";
-        ctx.fillStyle = "#08265b";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(namaVal.toUpperCase(), canvas.width / 2, canvas.height * 0.415);
-      } else {
-        // Render sertifikat digital resolusi tinggi (1600x1131)
-        canvas.width = 1600;
-        canvas.height = 1131;
-
-        // Latar Gradasi Biru Navy
-        const grad = ctx.createLinearGradient(0, 0, 1600, 1131);
-        grad.addColorStop(0, "#091e42");
-        grad.addColorStop(0.5, "#0d3273");
-        grad.addColorStop(1, "#0f172a");
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 1600, 1131);
-
-        // Bingkai Emas Luar & Dalam
-        ctx.strokeStyle = "#fbbf24";
-        ctx.lineWidth = 14;
-        ctx.strokeRect(24, 24, 1552, 1083);
-
-        ctx.strokeStyle = "rgba(252, 211, 77, 0.5)";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(48, 48, 1504, 1035);
-
-        // Header Kiri & Kanan
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#34d399";
-        ctx.font = "bold 22px Inter, Arial, sans-serif";
-        ctx.fillText("RUMAH PEMBERDAYAAN MASYARAKAT", 95, 115);
-
-        ctx.fillStyle = "#bfdbfe";
-        ctx.font = "600 18px Inter, Arial, sans-serif";
-        ctx.fillText("PT WEB DIGITAL MARKETING", 95, 145);
-
-        ctx.textAlign = "right";
-        ctx.fillStyle = "#fcd34d";
-        ctx.font = "bold 22px Inter, Arial, sans-serif";
-        ctx.fillText("22 November 2026", 1505, 115);
-
-        ctx.fillStyle = "#cbd5e1";
-        ctx.font = "500 18px Inter, Arial, sans-serif";
-        ctx.fillText("Indoor Futsal RT 7 Kelet", 1505, 145);
-
-        // Badge Judul
-        ctx.fillStyle = "#fbbf24";
-        ctx.beginPath();
-        ctx.roundRect(570, 245, 460, 54, 27);
-        ctx.fill();
-
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#08265b";
-        ctx.font = "900 24px Inter, Arial, sans-serif";
-        ctx.fillText("SERTIFIKAT PENGHARGAAN", 800, 280);
-
-        // Subjudul
-        ctx.fillStyle = "#bfdbfe";
-        ctx.font = "500 26px Inter, Arial, sans-serif";
-        ctx.fillText("Diberikan Kepada:", 800, 365);
-
-        // Nama Peserta
-        ctx.fillStyle = "#fcd34d";
-        ctx.font = "900 68px 'Playfair Display', Georgia, serif";
-        ctx.fillText(namaVal, 800, 465);
-
-        // Garis bawah nama
-        ctx.strokeStyle = "rgba(251, 191, 36, 0.5)";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(420, 495);
-        ctx.lineTo(1180, 495);
-        ctx.stroke();
-
-        // Deskripsi
-        ctx.fillStyle = "#e2e8f0";
-        ctx.font = "400 24px Inter, Arial, sans-serif";
-        ctx.fillText("Atas partisipasi dan kelulusannya dengan predikat Sangat Memuaskan (Nilai 100)", 800, 575);
-        ctx.font = "bold 25px Inter, Arial, sans-serif";
-        ctx.fillText("Pelatihan Mengenal AI dan Menguasai ChatGPT Untuk Semua", 800, 618);
-        ctx.font = "400 23px Inter, Arial, sans-serif";
-        ctx.fillText("yang diselenggarakan oleh PT Web Digital Marketing & Rumah Pemberdayaan Masyarakat.", 800, 660);
-
-        // Garis Pembatas Bawah
-        ctx.strokeStyle = "rgba(30, 64, 175, 0.8)";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(95, 840);
-        ctx.lineTo(1505, 840);
-        ctx.stroke();
-
-        // Footer Kiri
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#94a3b8";
-        ctx.font = "500 18px Inter, Arial, sans-serif";
-        ctx.fillText("Didukung Oleh:", 110, 910);
-        ctx.fillStyle = "#fcd34d";
-        ctx.font = "bold 24px Inter, Arial, sans-serif";
-        ctx.fillText("PT Web Digital Marketing", 110, 945);
-
-        // Tanda Tangan Kanan
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#dbeafe";
-        ctx.font = "italic bold 32px 'Playfair Display', Georgia, serif";
-        ctx.fillText("Syaiful Umar, S.Pd", 1320, 915);
-
-        ctx.strokeStyle = "#64748b";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(1160, 932);
-        ctx.lineTo(1480, 932);
-        ctx.stroke();
-
-        ctx.fillStyle = "#cbd5e1";
-        ctx.font = "bold 20px Inter, Arial, sans-serif";
-        ctx.fillText("Ketua Umum RPM", 1320, 962);
-      }
-
-      const link = document.createElement('a');
-      link.download = `Sertifikat_Pelatihan_AI_${namaVal.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-
-      showToast("Berhasil Diunduh!", "File sertifikat PNG telah disimpan ke perangkat Anda.", "✅");
-    }
+    // Inisialisasi soal saat halaman dimuat
+    renderQuestions();
   </script>
 </body>
 </html>
